@@ -1,3 +1,34 @@
+[//]: # (Image References)
+[model]:  ./images/kinematic_model.png
+
+# MPC
+
+## Model
+
+A simple Kinematic model, which ignores the longitudinal and lateral forces, gravity and mass, was used. The kinematic model describes the vehicle state with the vehicle's position coordinates (x, y), orientation angle (ψ), velocity (v), cross-track error (cte) and psi error (eψ). Actuators for this model are steering angle (δ) and acceleration (a). The model transforms the veicle's state using the actuations from the previous timestep as below:
+
+![alt text][model]
+
+Lf = the distance between the front of the vehicle and its center of gravity
+
+## Timestep Length (N) and Elapsed Duration (dt)
+Following values were used for the time horizon and the elapsed duration.<br>
+N = 10 <br>
+dt = 0.1 <br>
+
+Other sets of values tested include (25, 0.05), (25, 0.5), (20, 0.1) and (20, 0.2). MPC was able to drive the vehicle successfully with the set (20, 0.2), but only at lower speeds (< 50 mph). The final set values (10, 0.1) could drive the vehicle at a reference speed of 100 mph. (Reference: The set of values (10, 0.1) were suggested during the Udacity Project Office hours).
+
+## Polynomial Fitting and MPC Preprocessing
+The waypoints received from the simulator are transformed to the vehicle's coordinate system. Thus, the vehicle's position (px, py) becomes (0,0) and the orientation angle (ψ) is also 0 in the vehicle's coordinate system. A thirst degree polynominal (which can fit most real world roads) is fitted to the transformed waypoints. This polynomial serves as the reference trajectory against which the MPC is run to find the set of actuations that minimizes the cost function. 
+
+## Model Predictive Control with Latency
+To incorporate the latency of the actual application of the actuations, the vehicle's state (in the vehicle's coordinate system) is predicted after 100ms using the Kinematic model equations (line 128 to 131 in src/main.cpp). The predicted state is sent to the MPC to solve for the next actuations. Incorporation of the latency resulted in a stable controller and made it possible to drive the vehicle at a reference speed of 100 mph.
+
+# Video
+Following video shows the vehicle driving with a reference speed of 100 mph.
+
+[![MPC Controlled Steering](./images/mpc_controlled_driving.png)](https://youtu.be/LdKXGp_jZ1A "MPC Controlled Steering")
+
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
