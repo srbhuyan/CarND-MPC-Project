@@ -22,7 +22,7 @@ Other sets of values tested include (25, 0.05), (25, 0.5), (20, 0.1) and (20, 0.
 The waypoints received from the simulator are transformed to the vehicle's coordinate system. Thus, the vehicle's position (px, py) becomes (0,0) and the orientation angle (ψ) is also 0 in the vehicle's coordinate system. A thirst degree polynominal (which can fit most real world roads) is fitted to the transformed waypoints. This polynomial serves as the reference trajectory against which the MPC is run to find the set of actuations that minimizes the cost function. 
 
 ## Model Predictive Control with Latency
-To incorporate the latency of the actual application of the actuations, the vehicle's state (in the vehicle's coordinate system) is predicted after 100ms using the Kinematic model equations (line 128 to 131 in src/main.cpp). The predicted state is sent to the MPC to solve for the next actuations. Incorporation of the latency resulted in a stable controller and made it possible to drive the vehicle at a reference speed of 100 mph.
+To incorporate the latency (100ms) of the actual application of the actuations, the vehicle's state (in the vehicle's coordinate system) is predicted after 100ms using the Kinematic model update equations described above (line 128 to 131 in src/main.cpp). The predicted state is sent to the MPC to solve for the next actuations. Incorporation of the latency resulted in a stable controller and made it possible to drive the vehicle at a reference speed of 100 mph.
 
 # Video
 Following video shows the vehicle driving with a reference speed of 100 mph.
